@@ -1,8 +1,8 @@
-# Give To Fundation Project (in PL lang.)
+# EN Give To Fundation Project (in PL lang.)
 A django based website for sending used stuff to fundations that can use them for other people. 
 
 
-# Projekt Oddaj do Fundacji (Oddam w dobre ręce)
+# PL Projekt Oddaj do Fundacji (Oddam w dobre ręce)
 Strona internetowa na frameworku django, której celem jest połączenie ludzi, którzy maja używane (i niepotrzebne już im) rzeczy, które mogą oddać w łatwy sposób do odpowiedniej fundacji. 
 
 
