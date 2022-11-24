@@ -42,3 +42,12 @@ def test_006_get_form_confirm(client):
     url = reverse('form-confirm')
     response = client.get(url)
     assert response.status_code == 200
+
+
+# 2nd test for LandingPageView
+@pytest.mark.django_db
+def test_006_get_landing_page_with_category(client, categories):
+    url = reverse('landing-page')
+    category = categories[0]
+    response = client.get(url)
+    assert response.status_code == 200
