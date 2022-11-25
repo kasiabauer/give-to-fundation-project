@@ -1,6 +1,10 @@
-import pytest
+from datetime import datetime, time
+from random import randint
 
-from fundation_app.models import Category, Institution, INSTITUTION_TYPE
+import pytest
+from django.contrib.auth.models import User
+
+from fundation_app.models import Category, Institution, INSTITUTION_TYPE, Donation
 
 
 @pytest.fixture
@@ -29,4 +33,40 @@ def institutions(categories):
         else:
             institution_type = 0
         lst.append(x)
+    return lst
+
+
+@pytest.fixture
+def users():
+    lst = []
+    for user in range(10):
+        user_name = 'User_' + str(user)
+        lst.append(User.objects.create(username=user_name))
+    return lst
+
+
+@pytest.fixture
+def donations(users, categories):
+    lst = []
+    for user in users:
+        loop = 0
+        phone = f'+48 500 500 5{randint(1, 99)}'
+        institution = Institution.objects.create(
+            name='institution_name',
+            description='test description',
+            type=INSTITUTION_TYPE[1])
+        x = Donation.objects.create(
+            quantity=1,
+            address='test address 1',
+            phone_number=phone,
+            city='test city',
+            zip_code='01-100',
+            pick_up_date=datetime(22, 1, 1),
+            pick_up_time=time(10, 0),
+            pick_up_comment='test comment',
+            institution=institution)
+        x.categories.add(categories[0])
+        lst.append(x)
+
+        loop += 1
     return lst

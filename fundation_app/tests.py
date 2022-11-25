@@ -46,7 +46,7 @@ def test_006_get_form_confirm(client):
 
 # 2nd test for LandingPageView
 @pytest.mark.django_db
-def test_006_get_landing_page_with_category(client, categories):
+def test_006_category_model(client, categories):
     url = reverse('landing-page')
     category = categories[0]
     response = client.get(url)
@@ -55,9 +55,29 @@ def test_006_get_landing_page_with_category(client, categories):
 
 # 3rd test for LandingPageView
 @pytest.mark.django_db
-def test_007_get_landing_page_with_institution(client, categories, institutions):
+def test_007_institution_model(client, categories, institutions):
     url = reverse('landing-page')
     category = categories[0]
     institution = institutions[0]
+    print(institution)
     response = client.get(url)
     assert response.status_code == 200
+
+
+# test for User model
+@pytest.mark.django_db
+def test_007_user_model(client, users):
+    url = reverse('landing-page')
+    user = users[0]
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# test for Donation model
+@pytest.mark.django_db
+def test_007_donation_model(client, donations):
+    url = reverse('landing-page')
+    donation = donations[0]
+    response = client.get(url)
+    assert response.status_code == 200
+
