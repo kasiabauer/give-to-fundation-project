@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from fundation_app.forms import DonationModelForm
-from fundation_app.models import Donation, Category
+from fundation_app.models import Donation, Category, Institution, INSTITUTION_TYPE
 
 
 def get_bags():
@@ -14,17 +14,32 @@ def get_bags():
 
 
 def get_supported_organizations():
-    organizations = len(Donation.objects.order_by().values('institution').distinct())
+    organizations = Donation.objects.order_by().values('institution').distinct()
     return organizations
+
+
+def get_institutions():
+    # institutions = Institution.objects.order_by().values('name', 'description', 'type', 'categories__name', )
+    # .distinct()
+    institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
+    institutions_1 = Institution.objects.filter(type__contains=1).values('name', 'description', 'type',
+                                                                         'categories__name', )
+    institutions_2 = Institution.objects.filter(type__contains=2).values('name', 'description', 'type',
+                                                                         'categories__name', )
+    institutions_3 = Institution.objects.filter(type__contains=3).values('name', 'description', 'type',
+                                                                         'categories__name', )
+    return institutions, institutions_1, institutions_2, institutions_3
 
 
 class LandingPageView(View):
 
     def get(self, request):
         donated_bags = get_bags()
-        supported_organizations = get_supported_organizations()
+        supported_organizations_number = len(get_supported_organizations())
+        institutions = get_institutions()
         return render(request, 'index.html', {
-            'donated_bags': donated_bags, 'supported_organizations': supported_organizations})
+            'donated_bags': donated_bags, 'supported_organizations': supported_organizations_number,
+            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3]})
 
 
 class RegisterView(View):
