@@ -5,20 +5,24 @@ from fundation_app.forms import DonationModelForm
 from fundation_app.models import Donation, Category
 
 
-def get_bag_quantity():
-    bag_quantity = Donation.objects.all()
-    # all_donations_with_bags = Donation.objects.get(quantity__gte=0)
-    # bag_quantity = 0
-    # for donation in all_donations_with_bags:
-    #     bag_quantity += donation.quantity
+def get_bags():
+    all_donations_with_bags = Donation.objects.filter(quantity__gte=0)
+    bag_quantity = 0
+    for donation in all_donations_with_bags:
+        bag_quantity += donation.quantity
     return bag_quantity
+
+
+def get_supported_organizations():
+    organizations = len(Donation.objects.order_by().values('institution').distinct())
+    return organizations
 
 
 class LandingPageView(View):
 
     def get(self, request):
-        donated_bags = get_bag_quantity()
-        supported_organizations = 0
+        donated_bags = get_bags()
+        supported_organizations = get_supported_organizations()
         return render(request, 'index.html', {
             'donated_bags': donated_bags, 'supported_organizations': supported_organizations})
 

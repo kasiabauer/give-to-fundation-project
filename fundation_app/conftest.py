@@ -49,8 +49,7 @@ def users():
 def donations(users, categories):
     lst = []
     for user in users:
-        loop = 0
-        phone = f'+48 500 500 5{randint(1, 99)}'
+        phone = f'+48 500 500 0{randint(10, 99)}'
         institution = Institution.objects.create(
             name='institution_name',
             description='test description',
@@ -66,7 +65,6 @@ def donations(users, categories):
             pick_up_comment='test comment',
             institution=institution)
         x.categories.add(categories[0])
+        print(x.phone_number, x.id)
         lst.append(x)
-
-        loop += 1
     return lst
