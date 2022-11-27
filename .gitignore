@@ -130,3 +130,5 @@ dmypy.json
 
 # Bauer added
 .idea
+db.sqlite3
+db.sqlite3.bk
