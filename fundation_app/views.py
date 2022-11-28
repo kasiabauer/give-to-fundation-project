@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from fundation_app.forms import DonationModelForm
+from fundation_app.forms import DonationModelForm, RegisterForm
 from fundation_app.models import Donation, Category, Institution, INSTITUTION_TYPE
 
 
@@ -45,7 +45,8 @@ class LandingPageView(View):
 class RegisterView(View):
 
     def get(self, request):
-        return render(request, 'register.html')
+        form = RegisterForm()
+        return render(request, 'register.html', {'form': form})
 
 
 class LoginView(View):
