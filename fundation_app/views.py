@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -47,6 +48,23 @@ class RegisterView(View):
     def get(self, request):
         form = RegisterForm()
         return render(request, 'register.html', {'form': form})
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password1']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            u = User()
+            u.username = email
+            u.email = email
+            u.first_name = first_name
+            u.last_name = last_name
+            u.set_password(password)
+            u.save()
+            return redirect('/login')
+        return render(request, 'form.html', {'form': form})
 
 
 class LoginView(View):

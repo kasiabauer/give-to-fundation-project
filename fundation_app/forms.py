@@ -12,20 +12,25 @@ class DonationModelForm(forms.ModelForm):
 
 
 class RegisterForm(forms.ModelForm):
-
-    first_name = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-group'}), label='Imię')
-    last_name = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-group'}), label='Nazwisko')
-    username = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-group'}), label='Email')
-    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group'}), label='Hasło')
-    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group'}), label='Powtórz Hasło')
+    first_name = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-group',
+                                                                               'placeholder': 'Imię'}), label='')
+    last_name = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-group',
+                                                                              'placeholder': 'Nazwisko'}), label='')
+    email = forms.EmailField(max_length=128, widget=forms.EmailInput(attrs={'class': 'form-group',
+                                                                            'placeholder': 'Email'}), label='')
+    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group',
+                                                                                  'placeholder': 'Hasło'}), label='')
+    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group',
+                                                                                  'placeholder': 'Powtórz hasło'}),
+                                label='')
 
     class Meta:
         model = User
-        fields = ['username']
+        fields = ['email']
 
     def clean(self):
         data = super().clean()
         if data['password1'] != data['password2']:
-            raise ValidationError('Passwords are not the same.')
+            raise ValidationError('Hasła nie są takie same')
 
         return data
