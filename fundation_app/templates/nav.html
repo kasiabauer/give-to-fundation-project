@@ -6,4 +6,9 @@
           <li><a href="{% url 'landing-page' %}#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
           <li><a href="{% url 'add-donation' %}" class="btn btn--without-border">Przekaż dary</a></li>
           <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
+          <li>{% if user.is_authenticated %}
+            <p>Hello {{ user.username }}, <a href="yolo">logout?</a> </p></li>
+            {% else %}
+              <p>niezalogowany</p>
+          {% endif %}
         </ul>
