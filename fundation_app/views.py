@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -86,6 +86,14 @@ class LoginView(View):
                 return redirect(url)
         else:
             return render(request, 'login.html', {'form': form, 'msg': 'nie udalo się zalogować'})
+
+
+class LogoutView(View):
+
+    def get(self, request):
+        # user = request.user.username
+        logout(request)
+        return render(request, 'index.html')
 
 
 class AddDonationView(View):
