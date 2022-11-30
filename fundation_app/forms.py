@@ -36,12 +36,9 @@ class RegisterForm(forms.ModelForm):
         return data
 
 
-class LoginForm(forms.ModelForm):
+class LoginForm(forms.Form):  #  Dopisać własny model User
     username = forms.EmailField(max_length=128, widget=forms.EmailInput(attrs={'class': 'form-group',
                                                                                'placeholder': 'Email'}), label='')
     password = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group',
                                                                                  'placeholder': 'Hasło'}), label='')
 
-    class Meta:
-        model = User
-        fields = ['username', 'password']

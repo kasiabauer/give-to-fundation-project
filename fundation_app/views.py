@@ -21,8 +21,7 @@ def get_supported_organizations():
 
 
 def get_institutions():
-    # institutions = Institution.objects.order_by().values('name', 'description', 'type', 'categories__name', )
-    # .distinct()
+    # institutions = Institution.objects.all.values('name', 'description', 'type', 'categories__name', )
     institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
     institutions_1 = Institution.objects.filter(type__contains=1).values('name', 'description', 'type',
                                                                          'categories__name', )
@@ -41,7 +40,8 @@ class LandingPageView(View):
         institutions = get_institutions()
         return render(request, 'index.html', {
             'donated_bags': donated_bags, 'supported_organizations': supported_organizations_number,
-            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3]})
+            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3],
+            'institutions': institutions[0]})
 
 
 class RegisterView(View):
@@ -81,11 +81,11 @@ class LoginView(View):
             password = form.cleaned_data['password']
             user = authenticate(username=username, password=password)
             if user is not None:
-                url = request.GET.get('next', '/campaigns')
+                url = request.GET.get('next', '/')
                 login(request, user)
                 return redirect(url)
-            else:
-                return render(request, 'form.html', {'form': form, 'msg': 'nie udalo się zalogować'})
+        else:
+            return render(request, 'login.html', {'form': form, 'msg': 'nie udalo się zalogować'})
 
 
 class AddDonationView(View):
