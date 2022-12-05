@@ -1,5 +1,4 @@
 import pytest
-from django.contrib.auth.models import User
 from django.urls import reverse
 
 from fundation_app.models import Donation
@@ -110,7 +109,7 @@ def test_012_register_view_post(client):
     assert response.url == '/login'
 
 
-# test for Register View with donations data
+# test for logged user on landing page
 @pytest.mark.django_db
 def test_013_login_authenticated_user_get(client, user_with_pass):
     client.force_login(user_with_pass)
@@ -119,3 +118,15 @@ def test_013_login_authenticated_user_get(client, user_with_pass):
     assert response.status_code == 200
     html_content = str(response.content)
     assert html_content.__contains__('Witaj')
+
+
+# test for logout user on the landing page
+@pytest.mark.django_db
+def test_014_logout_authenticated_user_get(client, user_with_pass):
+    client.force_login(user_with_pass)
+    url = reverse('logout')
+    response = client.get(url)
+    assert response.status_code == 200
+    html_content = str(response.content)
+    assert html_content.__contains__('Witaj') == False
+
