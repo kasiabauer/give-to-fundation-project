@@ -21,6 +21,11 @@ def get_supported_organizations():
     return organizations
 
 
+def get_organizations():
+    organizations = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
+    return organizations
+
+
 def get_categories():
     categories = Category.objects.all()
     return categories
@@ -36,6 +41,12 @@ def get_institutions():
     institutions_3 = Institution.objects.filter(type__contains=3).values('name', 'description', 'type',
                                                                          'categories__name', )
     return institutions, institutions_1, institutions_2, institutions_3
+
+
+def get_institutions_by_category():
+    institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
+    institutions_ubrania = institutions.filter(categories__name='ubrania')
+    return institutions_ubrania
 
 
 class LandingPageView(View):
@@ -106,8 +117,7 @@ class AddDonationView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        categories = get_categories()
-        return render(request, 'form.html', {'categories': categories})
+        return render(request, 'form.html', {'categories': get_categories(), 'organizations': get_organizations()})
 
 
 class FormConfirmView(View):
