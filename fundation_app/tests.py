@@ -130,3 +130,22 @@ def test_014_logout_authenticated_user_get(client, user_with_pass):
     html_content = str(response.content)
     assert html_content.__contains__('Witaj') == False
 
+
+# test for donation form with authenticated user
+@pytest.mark.django_db
+def test_015_add_donation_authenticated_user_get(client, user_with_pass):
+    client.force_login(user_with_pass)
+    url = reverse('add-donation')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# test for donation form with categories step1
+@pytest.mark.django_db
+def test_016_add_donation_get_categories(client, user_with_pass, categories):
+    client.force_login(user_with_pass)
+    url = reverse('add-donation')
+    data = {'categories': categories}
+    response = client.get(url, data)
+    assert response.status_code == 200
+

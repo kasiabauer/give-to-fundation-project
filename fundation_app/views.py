@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -18,6 +19,11 @@ def get_bags():
 def get_supported_organizations():
     organizations = Donation.objects.order_by().values('institution').distinct()
     return organizations
+
+
+def get_categories():
+    categories = Category.objects.all()
+    return categories
 
 
 def get_institutions():
@@ -96,10 +102,12 @@ class LogoutView(View):
         return render(request, 'index.html')
 
 
-class AddDonationView(View):
+class AddDonationView(LoginRequiredMixin, View):
+    login_url = '/login/'
 
     def get(self, request):
-        return render(request, 'form.html')
+        categories = get_categories()
+        return render(request, 'form.html', {'categories': categories})
 
 
 class FormConfirmView(View):
