@@ -21,15 +21,19 @@ def get_supported_organizations():
 
 
 def get_institutions():
-    # institutions = Institution.objects.all.values('name', 'description', 'type', 'categories__name', )
-    institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
-    institutions_1 = Institution.objects.filter(type__contains=1).values('name', 'description', 'type',
-                                                                         'categories__name', )
-    institutions_2 = Institution.objects.filter(type__contains=2).values('name', 'description', 'type',
-                                                                         'categories__name', )
-    institutions_3 = Institution.objects.filter(type__contains=3).values('name', 'description', 'type',
-                                                                         'categories__name', )
+    institutions = Institution.objects.all().values('name', 'description', 'type', 'categories__name', )
+    institutions_1 = institution_by_type(institutions, 1)
+    institutions_2 = institution_by_type(institutions, 2)
+    institutions_3 = institution_by_type(institutions, 3)
     return institutions, institutions_1, institutions_2, institutions_3
+
+
+def institution_by_type(institutions, institution_type):
+    lst = []
+    for institution in institutions:
+        if institution['type'] == str(institution_type):
+            lst.append(institution)
+    return lst
 
 
 class LandingPageView(View):
