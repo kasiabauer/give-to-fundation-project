@@ -22,7 +22,8 @@ def get_supported_organizations():
 
 
 def get_organizations():
-    organizations = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
+    organizations = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', 'categories'
+                                                        , )
     return organizations
 
 

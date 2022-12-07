@@ -104,14 +104,14 @@
 
 
             <div class="form-group form-group--checkbox">
+            <!--  style="display: none; -->
               <label>
-                <input type="radio" name="organization" value="old" />
+                <input type="radio" name="organization" value="old"/>
                 <span class="checkbox radio"></span>
                 <span class="description">
-                  <div class="title">{{ organization.name }} - cat: {{ organization.categories__name}}</div>
-                  <div class="subtitle">
-                    {{ organization.description }}
-                  </div>
+                    <div class="category">cat nr:{{ organization.categories}}</div>
+                    <div class="title">{{ organization.name }}</div>
+                    <div class="subtitle">{{ organization.description }}</div>
                 </span>
               </label>
             </div>

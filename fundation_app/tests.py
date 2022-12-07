@@ -129,6 +129,8 @@ def test_014_logout_authenticated_user_get(client, user_with_pass):
     assert response.status_code == 200
     html_content = str(response.content)
     assert html_content.__contains__('Witaj') == False
+    # lepsze rozwiązanie od Sławka
+    # użyj response.context > wyszukaj usera i czy jest authenticated
 
 
 # test for donation form with authenticated user
