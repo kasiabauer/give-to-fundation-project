@@ -98,36 +98,25 @@
 
           <!-- STEP 4 -->
           <div data-step="3">
-            <h3>Wybierz organizacje, której chcesz pomóc:</h3>
-              {%  for organization in organizations %}
+            <h3>Wybierz organizację, której chcesz pomóc:</h3>
 
-
-
-            <div class="form-group form-group--checkbox">
-            <!--  style="display: none; -->
-              <label>
-                <input type="radio" name="organization" value="old"/>
-                <span class="checkbox radio"></span>
-                <span class="description">
-                    <div class="category">cat nr:{{ organization.categories}}</div>
-                    <div class="title">{{ organization.name }}</div>
-                    <div class="subtitle">{{ organization.description }}</div>
-                </span>
-              </label>
-            </div>
-              {% endfor %}
-            <div class="form-group form-group--checkbox">
-              <label>
-                <input type="radio" name="organization" value="old"/>
-                <span class="checkbox radio"></span>
-                <span class="description">
-                  <div class="title">Nazwa organizacji</div>
-                  <div class="subtitle">
-                    Opis organizacji
+              {%  for cat in categories %}
+                  <div class="[hidden]">dupa</div>
+                  <div class="hidden {{ cat.id }} category"> {{ cat }}
+                  {% for organization in  cat.institution_set.all%}
+                      <div class="form-group form-group--checkbox cat:{{ organization.categories}}">
+                          <label>
+                            <input type="radio" name="organization" value="old"/>
+                            <span class="checkbox radio"></span>
+                            <span class="description">
+                                <div class="title">{{ organization.name }}</div>
+                                <div class="subtitle">{{ organization.description }}</div>
+                            </span>
+                          </label>
+                        </div>
+                      {% endfor %}
                   </div>
-                </span>
-              </label>
-            </div>
+                {% endfor %}
 
             <div class="form-group form-group--buttons">
               <button type="button" class="btn prev-step">Wstecz</button>

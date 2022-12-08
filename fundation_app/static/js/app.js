@@ -127,6 +127,9 @@ document.addEventListener("DOMContentLoaded", function() {
       this.dropdown.addEventListener("click", e => {
         const target = e.target;
         this.dropdown.classList.toggle("selecting");
+        // if (target.tagName === "input") {
+        //   console.log('dupa')
+        // }
 
         // Save new value only when clicked on li
         if (target.tagName === "LI") {
@@ -236,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // TODO: get data from inputs and show them in summary
     }
-
     /**
      * Submit form
      *
@@ -252,4 +254,21 @@ document.addEventListener("DOMContentLoaded", function() {
   if (form !== null) {
     new FormSteps(form);
   }
+
+    /**
+     * Get user category choice
+     * put into a list
+   */
+  const list = document.getElementsByName("categories")
+  const newList = []
+  list.forEach((el) => {
+    el.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log('Kliknięcie w Element: ' + el.value);
+        newList.push(el.value);
+        console.log(newList)
+    });
+});
+
+
 });
