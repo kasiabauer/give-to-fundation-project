@@ -101,8 +101,9 @@
             <h3>Wybierz organizację, której chcesz pomóc:</h3>
 
               {%  for cat in categories %}
-                  <div class="[hidden]">dupa</div>
-                  <div class="hidden {{ cat.id }} category"> {{ cat }}
+{#                  <div class="test">test Bauer</div>#}
+{#                  <div class="hidden">dupa</div>#}
+                  <div class="hidden {{ cat.id }} organizations"> {{ cat }}
                   {% for organization in  cat.institution_set.all%}
                       <div class="form-group form-group--checkbox cat:{{ organization.categories}}">
                           <label>

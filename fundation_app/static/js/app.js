@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log(page);
     }
   }
+
   const helpSection = document.querySelector(".help");
   if (helpSection !== null) {
     new Help(helpSection);
@@ -139,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
+
   document.querySelectorAll(".form-group--dropdown select").forEach(el => {
     new FormSelect(el);
   });
@@ -146,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Hide elements when clicked on document
    */
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const target = e.target;
     const tagName = target.tagName;
 
@@ -239,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // TODO: get data from inputs and show them in summary
     }
+
     /**
      * Submit form
      *
@@ -250,25 +253,38 @@ document.addEventListener("DOMContentLoaded", function() {
       this.updateForm();
     }
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
 
-    /**
-     * Get user category choice
-     * put into a list
+  /**
+   * Get user category choice
+   * put into a list
    */
   const list = document.getElementsByName("categories")
-  const newList = []
+  const newList = [];
+  const organizationList = [...document.getElementsByClassName("organizations")]
+
   list.forEach((el) => {
     el.addEventListener('click', function (e) {
-        e.preventDefault();
-        console.log('Kliknięcie w Element: ' + el.value);
-        newList.push(el.value);
-        console.log(newList)
-    });
-});
+      console.log('Kliknięcie w Element: ' + el.value);
+      newList.push(el.value);
+      console.log(newList)
 
+      organizationList.forEach((item, index) => {
+                  console.log('test', item === el.value, index)
+
+        if (newList.includes(index + 1)) {
+        }
+      })
+    });
+
+
+  });
+
+
+  console.log('organizationList')
 
 });
