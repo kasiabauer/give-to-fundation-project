@@ -269,14 +269,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
   list.forEach((el) => {
     el.addEventListener('click', function (e) {
-      newList.push(el.value);
-      console.log(newList)
+
 
       organizationList.forEach((item, index) => {
         // console.log('test', item.className, index);
 
         if (item.classList.contains(el.value)) {
-          item.classList.remove('hidden')
+              if (newList.includes(el.value)) { // if already on the list (removed checkbox))
+                const index = newList.indexOf(el.value);
+                if (index > -1) { // only splice array when item is found
+                newList.splice(index, 1); // 2nd parameter means remove one item only
+                }
+                item.classList.add('hidden');
+              }
+
+              else {
+                newList.push(el.value);
+                item.classList.remove('hidden');
+
+                }
+              console.log(newList)
+
         }
       })
     });
