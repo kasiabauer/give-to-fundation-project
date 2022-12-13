@@ -269,22 +269,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   list.forEach((el) => {
     el.addEventListener('click', function (e) {
-      console.log('Kliknięcie w Element: ' + el.value);
       newList.push(el.value);
       console.log(newList)
 
       organizationList.forEach((item, index) => {
-                  console.log('test', item === el.value, index)
+        // console.log('test', item.className, index);
 
-        if (newList.includes(index + 1)) {
+        if (item.classList.contains(el.value)) {
+          item.classList.remove('hidden')
         }
       })
     });
 
-
   });
-
-
-  console.log('organizationList')
 
 });

@@ -101,11 +101,10 @@
             <h3>Wybierz organizację, której chcesz pomóc:</h3>
 
               {%  for cat in categories %}
-{#                  <div class="test">test Bauer</div>#}
-{#                  <div class="hidden">dupa</div>#}
-                  <div class="hidden {{ cat.id }} organizations"> {{ cat }}
+                  <div class="hidden {{ cat.id }} organizations form-group--checkbox">
+                      <div class="form-group"> <h4>Organizacje które przyjmują: {{ cat }}</h4></div>
                   {% for organization in  cat.institution_set.all%}
-                      <div class="form-group form-group--checkbox cat:{{ organization.categories}}">
+                      <div class="form-group form-group--checkbox">
                           <label>
                             <input type="radio" name="organization" value="old"/>
                             <span class="checkbox radio"></span>
@@ -115,6 +114,10 @@
                             </span>
                           </label>
                         </div>
+                      {% empty %}
+                      <div class="form-group">
+                          <div class="form-group">brak organizacji</div>
+                      </div>
                       {% endfor %}
                   </div>
                 {% endfor %}
