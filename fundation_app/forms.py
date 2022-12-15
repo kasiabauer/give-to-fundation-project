@@ -34,3 +34,11 @@ class RegisterForm(forms.ModelForm):
             raise ValidationError('Hasła nie są takie same')
 
         return data
+
+
+class LoginForm(forms.Form):  #  Dopisać własny model User
+    username = forms.EmailField(max_length=128, widget=forms.EmailInput(attrs={'class': 'form-group',
+                                                                               'placeholder': 'Email'}), label='')
+    password = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-group',
+                                                                                 'placeholder': 'Hasło'}), label='')
+

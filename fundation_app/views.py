@@ -1,8 +1,9 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
-from fundation_app.forms import DonationModelForm, RegisterForm
+from fundation_app.forms import DonationModelForm, RegisterForm, LoginForm
 from fundation_app.models import Donation, Category, Institution, INSTITUTION_TYPE
 
 
@@ -20,16 +21,19 @@ def get_supported_organizations():
 
 
 def get_institutions():
-    # institutions = Institution.objects.order_by().values('name', 'description', 'type', 'categories__name', )
-    # .distinct()
-    institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
-    institutions_1 = Institution.objects.filter(type__contains=1).values('name', 'description', 'type',
-                                                                         'categories__name', )
-    institutions_2 = Institution.objects.filter(type__contains=2).values('name', 'description', 'type',
-                                                                         'categories__name', )
-    institutions_3 = Institution.objects.filter(type__contains=3).values('name', 'description', 'type',
-                                                                         'categories__name', )
+    institutions = Institution.objects.all().values('name', 'description', 'type', 'categories__name', )
+    institutions_1 = institution_by_type(institutions, 1)
+    institutions_2 = institution_by_type(institutions, 2)
+    institutions_3 = institution_by_type(institutions, 3)
     return institutions, institutions_1, institutions_2, institutions_3
+
+
+def institution_by_type(institutions, institution_type):
+    lst = []
+    for institution in institutions:
+        if institution['type'] == str(institution_type):
+            lst.append(institution)
+    return lst
 
 
 class LandingPageView(View):
@@ -40,7 +44,8 @@ class LandingPageView(View):
         institutions = get_institutions()
         return render(request, 'index.html', {
             'donated_bags': donated_bags, 'supported_organizations': supported_organizations_number,
-            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3]})
+            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3],
+            'institutions': institutions[0]})
 
 
 class RegisterView(View):
@@ -70,7 +75,21 @@ class RegisterView(View):
 class LoginView(View):
 
     def get(self, request):
-        return render(request, 'login.html')
+        form = LoginForm()
+        return render(request, 'login.html', {'form': form})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                url = request.GET.get('next', '/')
+                login(request, user)
+                return redirect(url)
+        else:
+            return render(request, 'login.html', {'form': form, 'msg': 'nie udalo się zalogować'})
 
 
 class AddDonationView(View):
