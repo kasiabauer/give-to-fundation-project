@@ -40,9 +40,17 @@ def institutions(categories):
 def users():
     lst = []
     for user in range(10):
-        user_name = 'User_' + str(user)
+        user_name = 'User@' + str(user)
         lst.append(User.objects.create(username=user_name))
     return lst
+
+
+@pytest.fixture
+def user_with_pass():
+    lst = []
+    user_name = 'User@test.com'
+    user_with_pass = User.objects.create(username=user_name, password='0testpass0')
+    return user_with_pass
 
 
 @pytest.fixture
