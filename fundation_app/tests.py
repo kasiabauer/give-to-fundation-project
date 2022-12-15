@@ -87,8 +87,35 @@ def test_010_donation_model(client, donations):
 
 # test for LandingPage View with donations data
 @pytest.mark.django_db
-def test_002_get_landing_page_with_donations(client, donations):
+def test_011_get_landing_page_with_donations(client, donations):
     url = reverse('landing-page')
     response = client.get(url)
     assert len(Donation.objects.all()) == 10
     assert response.status_code == 200
+
+
+# test for Register View with donations data
+@pytest.mark.django_db
+def test_012_register_view_post(client):
+    data = {
+        'email': 'User@test.pl',
+        'first_name': 'User',
+        'last_name': 'Test',
+        'password1': 'Test',
+        'password2': 'Test'
+    }
+    url = reverse('register')
+    response = client.post(url, data)
+    assert response.status_code == 302
+    assert response.url == '/login'
+
+
+# test for Register View with donations data
+@pytest.mark.django_db
+def test_013_login_authenticated_user_get(client, user_with_pass):
+    client.force_login(user_with_pass)
+    url = reverse('landing-page')
+    response = client.get(url)
+    assert response.status_code == 200
+    html_content = str(response.content)
+    assert html_content.__contains__('Witaj')
