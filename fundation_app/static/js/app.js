@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log(page);
     }
   }
+
   const helpSection = document.querySelector(".help");
   if (helpSection !== null) {
     new Help(helpSection);
@@ -127,6 +128,9 @@ document.addEventListener("DOMContentLoaded", function() {
       this.dropdown.addEventListener("click", e => {
         const target = e.target;
         this.dropdown.classList.toggle("selecting");
+        // if (target.tagName === "input") {
+        //   console.log('dupa')
+        // }
 
         // Save new value only when clicked on li
         if (target.tagName === "LI") {
@@ -136,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
+
   document.querySelectorAll(".form-group--dropdown select").forEach(el => {
     new FormSelect(el);
   });
@@ -143,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Hide elements when clicked on document
    */
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const target = e.target;
     const tagName = target.tagName;
 
@@ -248,8 +253,47 @@ document.addEventListener("DOMContentLoaded", function() {
       this.updateForm();
     }
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
+
+  /**
+   * Get user category choice
+   * put into a list
+   */
+  const list = document.getElementsByName("categories")
+  const newList = [];
+  const organizationList = [...document.getElementsByClassName("organizations")]
+
+  list.forEach((el) => {
+    el.addEventListener('click', function (e) {
+
+
+      organizationList.forEach((item, index) => {
+        // console.log('test', item.className, index);
+
+        if (item.classList.contains(el.value)) {
+              if (newList.includes(el.value)) { // if already on the list (removed checkbox))
+                const index = newList.indexOf(el.value);
+                if (index > -1) { // only splice array when item is found
+                newList.splice(index, 1); // 2nd parameter means remove one item only
+                }
+                item.classList.add('hidden');
+              }
+
+              else {
+                newList.push(el.value);
+                item.classList.remove('hidden');
+
+                }
+              console.log(newList)
+
+        }
+      })
+    });
+
+  });
+
 });

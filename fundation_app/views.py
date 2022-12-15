@@ -1,8 +1,10 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
-from fundation_app.forms import DonationModelForm, RegisterForm
+from fundation_app.forms import DonationModelForm, RegisterForm, LoginForm
 from fundation_app.models import Donation, Category, Institution, INSTITUTION_TYPE
 
 
@@ -19,9 +21,19 @@ def get_supported_organizations():
     return organizations
 
 
+def get_organizations():
+    organizations = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', 'categories'
+                                                        , )
+    return organizations
+
+
+def get_categories():
+    categories = Category.objects.all()
+    return categories
+
+
 def get_institutions():
-    # institutions = Institution.objects.order_by().values('name', 'description', 'type', 'categories__name', )
-    # .distinct()
+    # institutions = Institution.objects.all.values('name', 'description', 'type', 'categories__name', )
     institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
     institutions_1 = Institution.objects.filter(type__contains=1).values('name', 'description', 'type',
                                                                          'categories__name', )
@@ -32,6 +44,12 @@ def get_institutions():
     return institutions, institutions_1, institutions_2, institutions_3
 
 
+def get_institutions_by_category():
+    institutions = Institution.objects.filter().values('name', 'description', 'type', 'categories__name', )
+    institutions_ubrania = institutions.filter(categories__name='ubrania')
+    return institutions_ubrania
+
+
 class LandingPageView(View):
 
     def get(self, request):
@@ -40,7 +58,8 @@ class LandingPageView(View):
         institutions = get_institutions()
         return render(request, 'index.html', {
             'donated_bags': donated_bags, 'supported_organizations': supported_organizations_number,
-            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3]})
+            'institutions1': institutions[1], 'institutions2': institutions[2], 'institutions3': institutions[3],
+            'institutions': institutions[0]})
 
 
 class RegisterView(View):
@@ -70,13 +89,36 @@ class RegisterView(View):
 class LoginView(View):
 
     def get(self, request):
-        return render(request, 'login.html')
+        form = LoginForm()
+        return render(request, 'login.html', {'form': form})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                url = request.GET.get('next', '/')
+                login(request, user)
+                return redirect(url)
+        else:
+            return render(request, 'login.html', {'form': form, 'msg': 'nie udalo się zalogować'})
 
 
-class AddDonationView(View):
+class LogoutView(View):
 
     def get(self, request):
-        return render(request, 'form.html')
+        # user = request.user.username
+        logout(request)
+        return render(request, 'index.html')
+
+
+class AddDonationView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        return render(request, 'form.html', {'categories': get_categories(), 'organizations': get_organizations()})
 
 
 class FormConfirmView(View):
